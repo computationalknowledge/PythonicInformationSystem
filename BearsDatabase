@@ -1,0 +1,96 @@
+from pymongo import MongoClient
+
+# Connect to MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# Create a database
+db = client['bears_database']
+
+# Create collections for North American and European bears
+north_american_bears = db['north_american_bears']
+european_bears = db['european_bears']
+
+# Define sample bear records
+north_american_bear_data = [
+    { 'name': 'Grizzly Bear', 'weight': 800, 'color': 'brown' },
+    { 'name': 'Black Bear', 'weight': 500, 'color': 'black' },
+    # Add more North American bear records here
+]
+
+european_bear_data = [
+    { 'name': 'Polar Bear', 'weight': 1500, 'color': 'white' },
+    { 'name': 'Brown Bear', 'weight': 700, 'color': 'brown' },
+    # Add more European bear records here
+]
+
+# Insert records into collections
+north_american_bears.insert_many(north_american_bear_data)
+european_bears.insert_many(european_bear_data)
+
+# Print all the bear records in each collection
+print('North American Bears:')
+for bear in north_american_bears.find():
+    print(bear)
+
+print('European Bears:')
+for bear in european_bears.find():
+    print(bear)
+
+# Close the MongoDB connection
+client.close()
+
+In this example, we first connect to MongoDB using the MongoClient class and specify the connection URL. Then, we create a database called "bears_database" using the client['bears_database'] syntax.
+
+
+Next, we create two collections, north_american_bears and european_bears, within the database.
+
+
+We define sample bear records as dictionaries, with fields like name, weight, and color. You can add more bear records to each collection if desired.
+
+
+Finally, we insert the bear records into their respective collections using the insert_many() method, and print all the bear records in each collection using the find() method.
+
+
+Remember to replace 'mongodb://localhost:27017/' with the appropriate connection URL if your MongoDB server is running on a different host or port.
+
+
+now shou how to find and output specific records
+
+from pymongo import MongoClient
+
+# Connect to MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# Access the bears_database
+db = client['bears_database']
+
+# Access the collections
+north_american_bears = db['north_american_bears']
+european_bears = db['european_bears']
+
+# Find specific records in the collections
+north_american_query = { 'color': 'brown' }
+european_query = { 'weight': { '$gt': 1000 } }
+
+# Output the matching records
+print('North American Bears:')
+for bear in north_american_bears.find(north_american_query):
+    print(bear)
+
+print('European Bears:')
+for bear in european_bears.find(european_query):
+    print(bear)
+
+# Close the MongoDB connection
+client.close()
+
+In this example, we connect to the MongoDB server and access the "bears_database" and the respective collections for North American and European bears.
+
+
+We define query filters to find specific records. In the north_american_query, we search for bears with the color 'brown'. In the european_query, we search for bears with a weight greater than 1000.
+
+
+We then use the find() method with the query filters to retrieve the matching records from each collection. The results are printed to the console.
+
+
+You can modify the query filters to match your specific criteria for finding records in the collections.
