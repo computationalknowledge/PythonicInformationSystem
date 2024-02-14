@@ -1,0 +1,34 @@
+PY MONGO CODE to create databases and collections v2
+
+from pymongo import MongoClient
+
+def print_all_records(database_name, collection_name):
+    # Connect to the local MongoDB server
+    client = MongoClient('localhost', 27017)
+
+    # Select the specified database
+    db = client[database_name]
+
+    # Choose the specified collection
+    collection = db[collection_name]
+
+    # Fetch all records in the collection
+    records = collection.find()
+
+    # Print each record
+    for record in records:
+        print(record)
+
+# Parameterize the database name and collection name
+database_name = 'planetmars'
+collection_name = 'my_collection'
+
+# Call the function to print all records in the specified collection
+print_all_records(database_name, collection_name)
+
+In this code, the print_all_records() function takes the database name and collection name as parameters. 
+It connects to the MongoDB server, selects the specified database, and chooses the specified collection. 
+It then fetches all records in the collection using the find() method and iterates over them to print each record.
+
+You can modify the database_name and collection_name variables to specify 
+the desired database and collection you want to print the records for.
