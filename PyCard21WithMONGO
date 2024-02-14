@@ -1,0 +1,77 @@
+To MONGO-ify your PYCARD 21 Game using classes and objects, you can create a Card class and a Deck class. 
+The Card class represents a single card with a suit and rank, and the Deck class represents a collection of cards.
+
+
+from pymongo import MongoClient
+
+class Card:
+    def __init__(self, suit, rank):
+        self.suit = suit
+        self.rank = rank
+
+    def __str__(self):
+        return f"{self.rank} of {self.suit}"
+
+class Deck:
+    def __init__(self, database_name, collection_name):
+        self.database_name = database_name
+        self.collection_name = collection_name
+        self.cards = []
+
+    def generate_cards(self):
+        suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+        ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
+
+        for suit in suits:
+            for rank in ranks:
+                card = Card(suit, rank)
+                self.cards.append(card)
+
+    def insert_cards_to_database(self):
+        # Connect to the local MongoDB server
+        client = MongoClient('localhost', 27017)
+
+        # Select the specified database
+        db = client[self.database_name]
+
+        # Choose the specified collection
+        collection = db[self.collection_name]
+
+        # Insert cards into the collection
+        for card in self.cards:
+            collection.insert_one({'suit': card.suit, 'rank': card.rank})
+
+    def print_all_cards(self):
+        # Connect to the local MongoDB server
+        client = MongoClient('localhost', 27017)
+
+        # Select the specified database
+        db = client[self.database_name]
+
+        # Fetch all cards from all collections in the database
+        collections = db.list_collection_names()
+        for collection_name in collections:
+            collection = db[collection_name]
+            cards = collection.find()
+            for card in cards:
+                print(card)
+
+# Parameterize the database name and collection name
+database_name = 'my_database'
+collection_name = 'my_collection'
+
+# Create a deck object
+deck = Deck(database_name, collection_name)
+
+# Generate and insert cards into the database
+deck.generate_cards()
+deck.insert_cards_to_database()
+
+# Print all cards from all collections
+deck.print_all_cards()
+
+In this code, the Card class represents a single card with a suit and rank. The Deck class represents a collection of cards. 
+The Deck class has methods to generate cards, insert them into the specified database and collection, and print all cards from all collections in the database.
+
+
+By creating objects of the Card and Deck classes, you can generate cards, insert them into the database, and print all the cards.
